@@ -113,32 +113,8 @@ footer strong{color:#f7c948}
       <p>Este espaço foi preparado com carinho para lembrar que ninguém precisa carregar suas dores sozinho.</p>
     </div>
     
-    <!-- 6 Versículos padrão (caso a internet esteja muito lenta, o usuário nunca vê a tela em branco) -->
     <div class="verse-grid" id="dynamic-verses">
-      <article class="verse">
-        <strong>Salmos 34:18</strong>
-        <div class="quote">“Perto está o Senhor dos que têm o coração quebrantado.”</div>
-      </article>
-      <article class="verse">
-        <strong>Isaías 41:10</strong>
-        <div class="quote">“Não temas, porque eu sou contigo...”</div>
-      </article>
-      <article class="verse">
-        <strong>Mateus 11:28</strong>
-        <div class="quote">“Vinde a mim, todos os que estais cansados...”</div>
-      </article>
-      <article class="verse">
-        <strong>Jeremias 29:11</strong>
-        <div class="quote">“Eu é que sei que pensamentos tenho a vosso respeito...”</div>
-      </article>
-      <article class="verse">
-        <strong>1 Pedro 5:7</strong>
-        <div class="quote">“Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós.”</div>
-      </article>
-      <article class="verse">
-        <strong>João 14:27</strong>
-        <div class="quote">“Deixo-vos a paz, a minha paz vos dou... Não se turbe o vosso coração.”</div>
-      </article>
+      <!-- O JavaScript irá inserir os versículos dinamicamente aqui -->
     </div>
 
     <div class="cards">
@@ -195,7 +171,6 @@ footer strong{color:#f7c948}
   </div>
 </section>
 
-<!-- INFORMAÇÕES DA IGREJA E REDES SOCIAIS -->
 <section class="church-info" id="informacoes">
   <div class="container">
     <div class="section-title">
@@ -250,80 +225,61 @@ footer strong{color:#f7c948}
 
 <script>
   (function() {
-    const bookTranslations = {
-      "Psalms": "Salmos", "Isaiah": "Isaías", "Matthew": "Mateus",
-      "Jeremiah": "Jeremias", "1 Peter": "1 Pedro", "John": "João",
-      "Philippians": "Filipenses", "Romans": "Romanos", "Joshua": "Josué",
-      "Lamentations": "Lamentações", "2 Corinthians": "2 Coríntios"
-    };
-
-    const versesList = [
-      "psalms 34:18", "isaiah 41:10", "matthew 11:28", "jeremiah 29:11",  
-      "psalms 147:3", "psalms 46:1", "1 peter 5:7", "john 14:27",      
-      "philippians 4:6", "isaiah 43:1", "psalms 40:1", "romans 8:38",
-      "psalms 23:4", "psalms 121:1", "isaiah 40:31", "joshua 1:9",
-      "romans 15:13", "psalms 91:11", "lamentations 3:22", "philippians 4:13"
+    // Array com todos os 20 versículos com texto completo traduzido para não depender puramente da API.
+    const allVersesLocal = [
+      { ref: "Salmos 34:18", text: "Perto está o Senhor dos que têm o coração quebrantado, e salva os contritos de espírito." },
+      { ref: "Isaías 41:10", text: "Não temas, porque eu sou contigo; não te assombres, porque eu sou teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça." },
+      { ref: "Mateus 11:28", text: "Vinde a mim, todos os que estais cansados e oprimidos, e eu vos aliviarei." },
+      { ref: "Jeremias 29:11", text: "Porque eu bem sei os pensamentos que tenho a vosso respeito, diz o Senhor; pensamentos de paz, e não de mal, para vos dar o fim que esperais." },
+      { ref: "Salmos 147:3", text: "Sara os quebrantados de coração, e lhes atou as suas feridas." },
+      { ref: "Salmos 46:1", text: "Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia." },
+      { ref: "1 Pedro 5:7", text: "Lançando sobre ele toda a vossa ansiedade, porque ele tem cuidado de vós." },
+      { ref: "João 14:27", text: "Deixo-vos a paz, a minha paz vos dou; não vo-la dou como o mundo a dá. Não se turbe o vosso coração, nem se atemorize." },
+      { ref: "Filipenses 4:6", text: "Não estejais inquietos por coisa alguma; antes as vossas petições sejam em tudo conhecidas diante de Deus pela oração e súplica, com ação de graças." },
+      { ref: "Isaías 43:1", text: "Mas agora, assim diz o Senhor que te criou, ó Jacó, e que te formou, ó Israel: Não temas, porque eu te remi; chamei-te pelo teu nome, tu és meu." },
+      { ref: "Salmos 40:1", text: "Esperei com paciência no Senhor, e ele se inclinou para mim, e ouviu o meu clamor." },
+      { ref: "Romanos 8:38", text: "Porque estou certo de que, nem a morte, nem a vida, nem os anjos, nem os principados, nem as potestades, nem o presente, nem o porvir, [...] nos poderá separar do amor de Deus, que está em Cristo Jesus nosso Senhor." },
+      { ref: "Salmos 23:4", text: "Ainda que eu andasse pelo vale da sombra da morte, não temeria mal algum, porque tu estás comigo; a tua vara e o teu cajado me consolam." },
+      { ref: "Salmos 121:1", text: "Levantarei os meus olhos para os montes, de onde vem o meu socorro. O meu socorro vem do Senhor que fez o céu e a terra." },
+      { ref: "Isaías 40:31", text: "Mas os que esperam no Senhor renovarão as forças, subirão com asas como águias; correrão, e não se cansarão; caminharão, e não se fatigarão." },
+      { ref: "Josué 1:9", text: "Não to mandei eu? Esforça-te, e tem bom ânimo; não temas, nem te espantes; porque o Senhor teu Deus é contigo, por onde quer que andares." },
+      { ref: "Romanos 15:13", text: "Ora o Deus de esperança vos encha de todo o gozo e paz em crença, para que abundeis em esperança pela virtude do Espírito Santo." },
+      { ref: "Salmos 91:11", text: "Porque aos seus anjos dará ordem a teu respeito, para te guardarem em todos os teus caminhos." },
+      { ref: "Lamentações 3:22", text: "As misericórdias do Senhor são a causa de não sermos consumidos, porque as suas misericórdias não têm fim." },
+      { ref: "Filipenses 4:13", text: "Posso todas as coisas em Cristo que me fortalece." }
     ];
 
-    function translateReference(reference) {
-      if (!reference) return "";
-      for (const [englishName, portugueseName] of Object.entries(bookTranslations)) {
-        if (reference.includes(englishName)) {
-          return reference.replace(englishName, portugueseName);
-        }
+    function shuffleArray(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
       }
-      return reference;
+      return newArray;
     }
 
-    async function loadDailyVerses() {
+    function renderVerses() {
       const container = document.getElementById('dynamic-verses');
       if (!container) return;
-
-      // 1. Embaralha a lista a cada F5
-      const shuffledVerses = [...versesList].sort(() => 0.5 - Math.random());
       
-      // 2. Tenta puxar até 10 referências (Margem de segurança para a API)
-      const selectedRefs = shuffledVerses.slice(0, 10);
-
-      try {
-        const promises = selectedRefs.map(ref =>
-          fetch(`https://bible-api.com/${ref}?translation=almeida`)
-            .then(res => res.ok ? res.json() : null)
-            .catch(e => null) // Se a rede cair, ignora apenas este versículo
-        );
-        
-        const versesData = await Promise.all(promises);
-        
-        // 3. Filtra apenas os que voltaram com sucesso da API
-        const validData = versesData.filter(data => data && data.text && data.reference);
-        
-        // 4. Seleciona EXATAMENTE 6 versículos perfeitos
-        const finalVerses = validData.slice(0, 6);
-
-        // Só atualiza a tela se conseguiu os 6 versículos, evitando espaços em branco
-        if (finalVerses.length === 6) {
-          let newHTML = "";
-          finalVerses.forEach(data => {
-            const cleanText = data.text.trim().replace(/\n/g, ' ');
-            const translatedRef = translateReference(data.reference);
-            
-            newHTML += `
-              <article class="verse">
-                <strong>${translatedRef}</strong>
-                <div class="quote">“${cleanText}”</div>
-              </article>
-            `;
-          });
-          container.innerHTML = newHTML;
-        }
-        
-      } catch (error) {
-        console.error("Falha ao buscar versículos da API.", error);
-      }
+      // Embaralha a lista com 20 versículos e seleciona 6 exatos a cada carregamento/atualização (F5)
+      const shuffledAndSelected = shuffleArray(allVersesLocal).slice(0, 6);
+      
+      let htmlString = "";
+      shuffledAndSelected.forEach(verseData => {
+        htmlString += `
+          <article class="verse">
+            <strong>${verseData.ref}</strong>
+            <div class="quote">“${verseData.text}”</div>
+          </article>
+        `;
+      });
+      
+      container.innerHTML = htmlString;
     }
 
-    // Executa imediatamente quando a página carrega
-    document.addEventListener('DOMContentLoaded', loadDailyVerses);
+    // Aciona a renderização instantaneamente ao carregar
+    document.addEventListener('DOMContentLoaded', renderVerses);
   })();
 </script>
 </body>
